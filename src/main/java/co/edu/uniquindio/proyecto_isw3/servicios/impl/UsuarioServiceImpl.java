@@ -32,6 +32,13 @@ public class UsuarioServiceImpl implements UsuarioService {
         return usuarioRepo.save(usuario).getDocumento();
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public String consultarNombreUsuario(String documento) throws Exception {
+        validar(documento);
+        return usuarioRepo.findById(documento).get().getNombre();
+    }
+
     private Usuario convertir(UsuarioDTO usuarioDTO) {
         Usuario usuario = new Usuario();
 

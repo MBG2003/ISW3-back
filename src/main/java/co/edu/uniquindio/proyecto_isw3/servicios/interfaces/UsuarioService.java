@@ -8,4 +8,6 @@ public interface UsuarioService {
     Usuario buscar(String documento) throws Exception;
 
     String crear(UsuarioDTO usuarioDTO) throws Exception;
+
+    String consultarNombreUsuario(String documento) throws Exception;
 }
