@@ -1,27 +1,30 @@
 package co.edu.uniquindio.proyecto_isw3.modelo;
 
-import co.edu.uniquindio.proyecto_isw3.modelo.key.CursoGrupoKey;
+import co.edu.uniquindio.proyecto_isw3.modelo.key.HorarioGrupoKey;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.Id;
 import java.io.Serializable;
-import java.util.List;
 
 @Entity
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class CursoGrupo implements Serializable {
+public class HorarioGrupo implements Serializable {
 
     @EmbeddedId
-    private CursoGrupoKey key;
+    private HorarioGrupoKey key;
 
     @Column(nullable = false)
-    private int cupos;
+    private DiaSemana diaSemana;
 
-    @OneToMany(mappedBy = "key.grupo")
-    private List<HorarioGrupo> horario;
+    @Column(nullable = false)
+    private int horaInicio;
+
+    @Column(nullable = false)
+    private int horaFin;
+
 }

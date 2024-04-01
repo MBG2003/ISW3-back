@@ -1,19 +1,21 @@
 package co.edu.uniquindio.proyecto_isw3.servicios.impl;
 
-import co.edu.uniquindio.proyecto_isw3.dto.CursoAulaHorarioDTO;
 import co.edu.uniquindio.proyecto_isw3.dto.CursoDTO;
 import co.edu.uniquindio.proyecto_isw3.dto.CursoGrupoDTO;
+import co.edu.uniquindio.proyecto_isw3.dto.HorarioGrupoDTO;
 import co.edu.uniquindio.proyecto_isw3.dto.get.CursoGetDTO;
 import co.edu.uniquindio.proyecto_isw3.dto.get.CursoGrupoGetDTO;
 import co.edu.uniquindio.proyecto_isw3.modelo.AulaCurso;
 import co.edu.uniquindio.proyecto_isw3.modelo.Curso;
 import co.edu.uniquindio.proyecto_isw3.modelo.CursoGrupo;
-import co.edu.uniquindio.proyecto_isw3.modelo.Grupo;
-import co.edu.uniquindio.proyecto_isw3.modelo.key.AulaCursoKey;
+import co.edu.uniquindio.proyecto_isw3.modelo.HorarioGrupo;
 import co.edu.uniquindio.proyecto_isw3.modelo.key.CursoGrupoKey;
 import co.edu.uniquindio.proyecto_isw3.modelo.key.CursoKey;
+import co.edu.uniquindio.proyecto_isw3.modelo.key.HorarioGrupoKey;
 import co.edu.uniquindio.proyecto_isw3.repositorios.CursoGrupoRepo;
 import co.edu.uniquindio.proyecto_isw3.repositorios.CursoRepo;
+import co.edu.uniquindio.proyecto_isw3.repositorios.GrupoRepo;
+import co.edu.uniquindio.proyecto_isw3.repositorios.HorarioGrupoRepo;
 import co.edu.uniquindio.proyecto_isw3.servicios.interfaces.AulaService;
 import co.edu.uniquindio.proyecto_isw3.servicios.interfaces.CursoService;
 import co.edu.uniquindio.proyecto_isw3.servicios.interfaces.ProgramaService;
@@ -24,7 +26,6 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +36,10 @@ public class CursoServiceImpl implements CursoService {
     private CursoRepo cursoRepo;
 
     private CursoGrupoRepo cursoGrupoRepo;
+
+    private GrupoRepo grupoRepo;
+
+    private HorarioGrupoRepo horarioGrupoRepo;
 
     private AulaService aulaService;
 
@@ -70,11 +75,24 @@ public class CursoServiceImpl implements CursoService {
             CursoGrupo cg = new CursoGrupo();
             CursoGrupoKey cgk = new CursoGrupoKey();
             cgk.setCurso(buscar(cursoDTO.getIdFacultad(), cursoDTO.getIdPrograma(), idCurso));
-            cgk.setGrupo(g.getIdGrupo());
+            cgk.setGrupo(grupoRepo.findById(g.getIdGrupo()).get());
 
             cg.setKey(cgk);
             cg.setCupos(g.getCupos());
             cursoGrupoRepo.save(cg);
+
+            for (HorarioGrupoDTO hgd : g.getHorario()) {
+                HorarioGrupo hg = new HorarioGrupo();
+                HorarioGrupoKey hgkey = new HorarioGrupoKey();
+
+                hgkey.setGrupo(cursoGrupoRepo.findById(cgk).get());
+                hg.setKey(hgkey);
+                hg.setDiaSemana(hgd.getDia());
+                hg.setHoraInicio(hgd.getHoraInicio());
+                hg.setHoraFin(hgd.getHoraFin());
+
+                horarioGrupoRepo.save(hg);
+            }
         }
 
         return idCurso;
@@ -92,11 +110,24 @@ public class CursoServiceImpl implements CursoService {
             CursoGrupo cg = new CursoGrupo();
             CursoGrupoKey cgk = new CursoGrupoKey();
             cgk.setCurso(buscar(cursoDTO.getIdFacultad(), cursoDTO.getIdPrograma(), cursoDTO.getIdCurso()));
-            cgk.setGrupo(g.getIdGrupo());
+            cgk.setGrupo(grupoRepo.findById(g.getIdGrupo()).get());
 
             cg.setKey(cgk);
             cg.setCupos(g.getCupos());
             cursoGrupoRepo.save(cg);
+
+            for (HorarioGrupoDTO hgd : g.getHorario()) {
+                HorarioGrupo hg = new HorarioGrupo();
+                HorarioGrupoKey hgkey = new HorarioGrupoKey();
+
+                hgkey.setGrupo(cursoGrupoRepo.findById(cgk).get());
+                hg.setKey(hgkey);
+                hg.setDiaSemana(hgd.getDia());
+                hg.setHoraInicio(hgd.getHoraInicio());
+                hg.setHoraFin(hgd.getHoraFin());
+
+                horarioGrupoRepo.save(hg);
+            }
         }
         return convertir(cursoSave);
     }
@@ -167,7 +198,7 @@ public class CursoServiceImpl implements CursoService {
 
         if(curso.getGrupos() != null) {
             for (CursoGrupo cg : curso.getGrupos()) {
-                grupos.add(new CursoGrupoGetDTO(cg.getKey().getGrupo().getCodigo(), cg.getCupos()));
+                grupos.add(new CursoGrupoGetDTO(cg.getKey().getGrupo().getIdGrupo(), cg.getKey().getGrupo().getNombre(), cg.getCupos()));
             }
         }
 

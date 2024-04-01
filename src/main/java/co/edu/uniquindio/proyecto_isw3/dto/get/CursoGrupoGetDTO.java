@@ -12,5 +12,7 @@ public class CursoGrupoGetDTO {
 
     private int idGrupo;
 
+    private String nombre;
+
     private int cupos;
 }

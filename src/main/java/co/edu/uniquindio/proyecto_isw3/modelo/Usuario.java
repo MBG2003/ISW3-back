@@ -23,7 +23,6 @@ public class Usuario implements Serializable {
     @Column(nullable = false, length = 30)
     private String nombre;
 
-
     @Column(nullable = false, length = 200)
     private String contrasenia;
 

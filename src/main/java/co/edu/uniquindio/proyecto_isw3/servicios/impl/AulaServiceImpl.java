@@ -63,6 +63,9 @@ public class AulaServiceImpl implements AulaService {
     @Transactional
     public String crear(AulaDTO aulaDTO) throws Exception {
         Aula aula = convertir(aulaDTO);
+        if(aulaRepo.existsById(aula.getKey())){
+            throw new Exception(ms.getMessage("aula.ya.existe", new Object[]{aula.getKey().getIdAula(), aula.getKey().getFacultad().getIdFacultad()}, LocaleContextHolder.getLocale()));
+        }
         return aulaRepo.save(aula).getKey().getIdAula();
     }
 

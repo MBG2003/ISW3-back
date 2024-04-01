@@ -47,6 +47,4 @@ public class CursoDTO {
     private int horas;
 
     private Set<RecursoAV> recursos;
-
-    //private List<CursoAulaHorarioDTO> aulas;
 }

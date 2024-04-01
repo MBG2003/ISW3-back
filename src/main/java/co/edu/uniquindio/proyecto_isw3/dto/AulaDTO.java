@@ -24,7 +24,7 @@ public class AulaDTO {
     private String idAula;
 
     @NotEmpty(message = "{aula.nombre.vacio}")
-    @Length(max = 10, message = "{aula.nombre.tamax}")
+    @Length(max = 30, message = "{aula.nombre.tamax}")
     private String nombre;
 
     private int capacidad;

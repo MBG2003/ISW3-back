@@ -17,7 +17,7 @@ public class Curso implements Serializable {
     @EmbeddedId
     private CursoKey key;
 
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = 50)
     private String nombre;
 
     @Column(nullable = false, length = 3)

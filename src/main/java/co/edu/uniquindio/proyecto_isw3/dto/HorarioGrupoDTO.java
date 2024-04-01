@@ -5,16 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Time;
-
 @Getter
 @Setter
 @AllArgsConstructor
-public class CursoAulaHorarioDTO {
-
-    private String idFacultad;
-
-    private String idAula;
+public class HorarioGrupoDTO {
 
     private DiaSemana dia;
 

@@ -1,20 +1,28 @@
 package co.edu.uniquindio.proyecto_isw3.modelo;
 
-public enum Grupo {
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-    D_1(0),
-    D_2(1),
-    D_3(2),
-    N_1(3),
-    N_2(4);
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import java.io.Serializable;
+import java.util.List;
 
-    private int codigo;
+@Entity
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+public class Grupo implements Serializable {
 
-    Grupo(int codigo) {
-        this.codigo = codigo;
-    }
+    @Id
+    @EqualsAndHashCode.Include
+    @Column(name = "id_grupo", nullable = false)
+    private int idGrupo;
 
-    public int getCodigo() {
-        return this.codigo;
-    }
+    @Column(nullable = false, length = 10)
+    private String nombre;
+
+    @OneToMany(mappedBy = "key.grupo")
+    private List<CursoGrupo> cursos;
 }

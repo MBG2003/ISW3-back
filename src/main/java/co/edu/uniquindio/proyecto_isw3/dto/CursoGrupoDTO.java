@@ -5,12 +5,16 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
 public class CursoGrupoDTO {
 
-    private Grupo idGrupo;
+    private int idGrupo;
 
     private int cupos;
+
+    private List<HorarioGrupoDTO> horario;
 }

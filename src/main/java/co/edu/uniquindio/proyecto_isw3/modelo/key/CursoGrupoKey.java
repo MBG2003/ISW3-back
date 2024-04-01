@@ -21,6 +21,7 @@ public class CursoGrupoKey implements Serializable {
     })
     private Curso curso;
 
-    @Enumerated(EnumType.STRING)
+    @ManyToOne
+    @JoinColumn(name = "id_grupo", referencedColumnName = "id_grupo")
     private Grupo grupo;
 }
