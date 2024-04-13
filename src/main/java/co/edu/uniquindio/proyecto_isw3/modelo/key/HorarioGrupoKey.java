@@ -24,6 +24,5 @@ public class HorarioGrupoKey implements Serializable {
 
     @EqualsAndHashCode.Include
     @Column(name = "id_horario", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idHorario;
 }

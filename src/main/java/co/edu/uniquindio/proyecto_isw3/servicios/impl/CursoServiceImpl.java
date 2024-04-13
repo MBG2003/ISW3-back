@@ -5,10 +5,8 @@ import co.edu.uniquindio.proyecto_isw3.dto.CursoGrupoDTO;
 import co.edu.uniquindio.proyecto_isw3.dto.HorarioGrupoDTO;
 import co.edu.uniquindio.proyecto_isw3.dto.get.CursoGetDTO;
 import co.edu.uniquindio.proyecto_isw3.dto.get.CursoGrupoGetDTO;
-import co.edu.uniquindio.proyecto_isw3.modelo.AulaCurso;
-import co.edu.uniquindio.proyecto_isw3.modelo.Curso;
-import co.edu.uniquindio.proyecto_isw3.modelo.CursoGrupo;
-import co.edu.uniquindio.proyecto_isw3.modelo.HorarioGrupo;
+import co.edu.uniquindio.proyecto_isw3.dto.get.HorarioGrupoGetDTO;
+import co.edu.uniquindio.proyecto_isw3.modelo.*;
 import co.edu.uniquindio.proyecto_isw3.modelo.key.CursoGrupoKey;
 import co.edu.uniquindio.proyecto_isw3.modelo.key.CursoKey;
 import co.edu.uniquindio.proyecto_isw3.modelo.key.HorarioGrupoKey;
@@ -86,8 +84,9 @@ public class CursoServiceImpl implements CursoService {
                 HorarioGrupoKey hgkey = new HorarioGrupoKey();
 
                 hgkey.setGrupo(cursoGrupoRepo.findById(cgk).get());
+                hgkey.setIdHorario(horarioGrupoRepo.cantidadHorarios());
                 hg.setKey(hgkey);
-                hg.setDiaSemana(hgd.getDia());
+                hg.setDiaSemana(hgd.getDiaSemana());
                 hg.setHoraInicio(hgd.getHoraInicio());
                 hg.setHoraFin(hgd.getHoraFin());
 
@@ -121,8 +120,9 @@ public class CursoServiceImpl implements CursoService {
                 HorarioGrupoKey hgkey = new HorarioGrupoKey();
 
                 hgkey.setGrupo(cursoGrupoRepo.findById(cgk).get());
+                hgkey.setIdHorario(horarioGrupoRepo.cantidadHorarios());
                 hg.setKey(hgkey);
-                hg.setDiaSemana(hgd.getDia());
+                hg.setDiaSemana(hgd.getDiaSemana());
                 hg.setHoraInicio(hgd.getHoraInicio());
                 hg.setHoraFin(hgd.getHoraFin());
 
@@ -195,11 +195,18 @@ public class CursoServiceImpl implements CursoService {
     private CursoGetDTO convertir(Curso curso) {
 
         List<CursoGrupoGetDTO> grupos = new ArrayList<>();
+        List<HorarioGrupoGetDTO> horario = new ArrayList<>();
 
         if(curso.getGrupos() != null) {
             for (CursoGrupo cg : curso.getGrupos()) {
-                grupos.add(new CursoGrupoGetDTO(cg.getKey().getGrupo().getIdGrupo(), cg.getKey().getGrupo().getNombre(), cg.getCupos()));
+                for(HorarioGrupo hg : cg.getHorario())  {
+                    horario.add(new HorarioGrupoGetDTO(hg.getKey().getIdHorario(), hg.getDiaSemana().getId(), hg.getHoraInicio(), hg.getHoraFin()));
+                }
+                grupos.add(new CursoGrupoGetDTO(cg.getKey().getGrupo().getIdGrupo(), cg.getKey().getGrupo().getNombre(), cg.getCupos(), horario));
+                horario = new ArrayList<>();
+
             }
+
         }
 
         return new CursoGetDTO(
