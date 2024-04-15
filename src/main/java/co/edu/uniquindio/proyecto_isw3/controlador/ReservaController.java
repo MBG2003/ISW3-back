@@ -44,6 +44,7 @@ public class ReservaController {
 
     @PostMapping("/crear")
     public ResponseEntity<MensajeDTO> crear(@RequestBody @Valid ReservaDTO reservaDTO) throws Exception {
+        System.out.println(reservaDTO.getFecha());
         int reserva = reservaService.agregar(reservaDTO);
         return ResponseEntity
                 .status(HttpStatus.OK)

@@ -31,7 +31,7 @@ public class CursoDTO {
     private String idDocente;
 
     @NotEmpty(message = "{curso.nombre.vacio}")
-    @Length(max = 30, message = "{curso.nombre.tamax}")
+    @Length(max = 50, message = "{curso.nombre.tamax}")
     private String nombre;
 
     @NotEmpty(message = "{curso.pensum.vacio}")

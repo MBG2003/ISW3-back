@@ -84,7 +84,7 @@ public class CursoServiceImpl implements CursoService {
                 HorarioGrupoKey hgkey = new HorarioGrupoKey();
 
                 hgkey.setGrupo(cursoGrupoRepo.findById(cgk).get());
-                hgkey.setIdHorario(horarioGrupoRepo.cantidadHorarios());
+                hgkey.setIdHorario(cg.getKey().getCurso().getKey().getPrograma().getKey().getIdPrograma() + cg.getKey().getCurso().getKey().getIdCurso() + cg.getKey().getGrupo().getIdGrupo() + horarioGrupoRepo.cantidadHorariosCursoGrupo(cg.getKey().getCurso().getKey().getIdCurso(), cg.getKey().getGrupo().getIdGrupo()));
                 hg.setKey(hgkey);
                 hg.setDiaSemana(hgd.getDiaSemana());
                 hg.setHoraInicio(hgd.getHoraInicio());
@@ -115,12 +115,13 @@ public class CursoServiceImpl implements CursoService {
             cg.setCupos(g.getCupos());
             cursoGrupoRepo.save(cg);
 
+            horarioGrupoRepo.eliminarHorariosCursoGrupo(cg.getKey().getCurso().getKey().getIdCurso(), cg.getKey().getGrupo().getIdGrupo());
             for (HorarioGrupoDTO hgd : g.getHorario()) {
                 HorarioGrupo hg = new HorarioGrupo();
                 HorarioGrupoKey hgkey = new HorarioGrupoKey();
 
                 hgkey.setGrupo(cursoGrupoRepo.findById(cgk).get());
-                hgkey.setIdHorario(horarioGrupoRepo.cantidadHorarios());
+                hgkey.setIdHorario(cg.getKey().getCurso().getKey().getPrograma().getKey().getIdPrograma() + cg.getKey().getCurso().getKey().getIdCurso() + cg.getKey().getGrupo().getIdGrupo() + horarioGrupoRepo.cantidadHorariosCursoGrupo(cg.getKey().getCurso().getKey().getIdCurso(), cg.getKey().getGrupo().getIdGrupo()));
                 hg.setKey(hgkey);
                 hg.setDiaSemana(hgd.getDiaSemana());
                 hg.setHoraInicio(hgd.getHoraInicio());

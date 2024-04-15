@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class HorarioGrupoGetDTO {
 
-    private int idHorario;
+    private String idHorario;
 
     private int diaSemana;
 

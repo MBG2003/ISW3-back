@@ -35,6 +35,7 @@ public class TokenUtils {
         String token = Jwts
                 .builder()
                 .claim("userId", usuario.getDocumento())
+                .claim("name", usuario.getNombre())
                 .claim("authorities",
                         grantedAuthorities.stream()
                                 .map(GrantedAuthority::getAuthority)
