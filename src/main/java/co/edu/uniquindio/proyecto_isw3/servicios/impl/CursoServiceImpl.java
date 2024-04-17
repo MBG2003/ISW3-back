@@ -1,5 +1,6 @@
 package co.edu.uniquindio.proyecto_isw3.servicios.impl;
 
+import co.edu.uniquindio.proyecto_isw3.dto.AulaCursoDTO;
 import co.edu.uniquindio.proyecto_isw3.dto.CursoDTO;
 import co.edu.uniquindio.proyecto_isw3.dto.CursoGrupoDTO;
 import co.edu.uniquindio.proyecto_isw3.dto.HorarioGrupoDTO;
@@ -7,13 +8,11 @@ import co.edu.uniquindio.proyecto_isw3.dto.get.CursoGetDTO;
 import co.edu.uniquindio.proyecto_isw3.dto.get.CursoGrupoGetDTO;
 import co.edu.uniquindio.proyecto_isw3.dto.get.HorarioGrupoGetDTO;
 import co.edu.uniquindio.proyecto_isw3.modelo.*;
+import co.edu.uniquindio.proyecto_isw3.modelo.key.AulaCursoKey;
 import co.edu.uniquindio.proyecto_isw3.modelo.key.CursoGrupoKey;
 import co.edu.uniquindio.proyecto_isw3.modelo.key.CursoKey;
 import co.edu.uniquindio.proyecto_isw3.modelo.key.HorarioGrupoKey;
-import co.edu.uniquindio.proyecto_isw3.repositorios.CursoGrupoRepo;
-import co.edu.uniquindio.proyecto_isw3.repositorios.CursoRepo;
-import co.edu.uniquindio.proyecto_isw3.repositorios.GrupoRepo;
-import co.edu.uniquindio.proyecto_isw3.repositorios.HorarioGrupoRepo;
+import co.edu.uniquindio.proyecto_isw3.repositorios.*;
 import co.edu.uniquindio.proyecto_isw3.servicios.interfaces.AulaService;
 import co.edu.uniquindio.proyecto_isw3.servicios.interfaces.CursoService;
 import co.edu.uniquindio.proyecto_isw3.servicios.interfaces.ProgramaService;
@@ -38,6 +37,8 @@ public class CursoServiceImpl implements CursoService {
     private GrupoRepo grupoRepo;
 
     private HorarioGrupoRepo horarioGrupoRepo;
+
+    private AulaCursoRepo aulaCursoRepo;
 
     private AulaService aulaService;
 
@@ -154,6 +155,30 @@ public class CursoServiceImpl implements CursoService {
         return cursoRepo.findById(key).get();
     }
 
+    @Override
+    @Transactional
+    public void asignarAula(AulaCursoDTO aulaCursoDTO) throws Exception {
+        CursoGrupoKey cgkey = new CursoGrupoKey();
+        cgkey.setCurso(buscar(aulaCursoDTO.getIdFacultadCurso(), aulaCursoDTO.getIdPrograma(), aulaCursoDTO.getIdCurso()));
+        cgkey.setGrupo(grupoRepo.findById(aulaCursoDTO.getIdGrupo()).get());
+
+        CursoGrupo cg = cursoGrupoRepo.findById(cgkey).get();
+        Aula aula = aulaService.buscar(aulaCursoDTO.getIdFacultadAula(), aulaCursoDTO.getIdAula());
+
+        AulaCurso aulaCurso = new AulaCurso();
+        AulaCursoKey ackey = new AulaCursoKey();
+
+        ackey.setCursoGrupo(cg);
+        ackey.setAula(aula);
+
+        aulaCurso.setKey(ackey);
+        aulaCurso.setDia(aulaCursoDTO.getDiaSemana());
+        aulaCurso.setHoraInicio(aulaCursoDTO.getHoraInicio());
+        aulaCurso.setHoraFin(aulaCursoDTO.getHoraFin());
+
+        aulaCursoRepo.save(aulaCurso);
+    }
+
 
     private Curso convertir(CursoDTO cursoDTO) throws Exception {
         Curso curso = new Curso();
@@ -188,8 +213,6 @@ public class CursoServiceImpl implements CursoService {
         curso.setRecursos(cursoDTO.getRecursos());
         curso.setDocente(usuarioService.buscar(cursoDTO.getIdDocente()));
 
-        curso.setHorario(horario);
-
         return curso;
     }
 
@@ -200,7 +223,7 @@ public class CursoServiceImpl implements CursoService {
 
         if(curso.getGrupos() != null) {
             for (CursoGrupo cg : curso.getGrupos()) {
-                for(HorarioGrupo hg : cg.getHorario())  {
+                for(HorarioGrupo hg : cg.getHorarioGrupo())  {
                     horario.add(new HorarioGrupoGetDTO(hg.getKey().getIdHorario(), hg.getDiaSemana().getId(), hg.getHoraInicio(), hg.getHoraFin()));
                 }
                 grupos.add(new CursoGrupoGetDTO(cg.getKey().getGrupo().getIdGrupo(), cg.getKey().getGrupo().getNombre(), cg.getCupos(), horario));

@@ -5,6 +5,7 @@ import co.edu.uniquindio.proyecto_isw3.dto.MensajeDTO;
 import co.edu.uniquindio.proyecto_isw3.dto.get.AulaGetDTO;
 import co.edu.uniquindio.proyecto_isw3.dto.get.ProgramaGetDTO;
 import co.edu.uniquindio.proyecto_isw3.dto.get.ReservaGetDTO;
+import co.edu.uniquindio.proyecto_isw3.modelo.DiaSemana;
 import co.edu.uniquindio.proyecto_isw3.servicios.interfaces.AulaService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.MessageSource;
@@ -69,11 +70,11 @@ public class AulaController {
                 .body(new MensajeDTO(HttpStatus.OK, false, ms.getMessage("aula.lista", null, LocaleContextHolder.getLocale()), aulas));
     }
 
-    /*@GetMapping("/listarHorarioPorAula")
-    public ResponseEntity<MensajeDTO> listarHorarioPorAula(@RequestParam String idFacultad, @RequestParam String idAula) throws Exception {
-        List<ReservaGetDTO> aulas = aulaService.listarHorarioPorAula(idFacultad, idAula);
+    @GetMapping("/listarPorHorario")
+    public ResponseEntity<MensajeDTO> listarPorHorario(@RequestParam int diaSemana, @RequestParam int horaInicio, @RequestParam int horaFin) throws Exception {
+        List<AulaGetDTO> aulas = aulaService.listarPorHorario(diaSemana, horaInicio, horaFin);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new MensajeDTO(HttpStatus.OK, false, ms.getMessage("aula.lista", null, LocaleContextHolder.getLocale()), aulas));
-    }*/
+    }
 }

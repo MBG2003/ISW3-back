@@ -35,9 +35,6 @@ public class Curso implements Serializable {
     @OneToMany(mappedBy = "key.curso")
     private List<CursoGrupo> grupos;
 
-    @OneToMany(mappedBy = "key.curso")
-    private List<AulaCurso> horario;
-
     @ManyToOne
     @JoinColumn(name = "id_docente", referencedColumnName = "id_usuario")
     private Usuario docente;

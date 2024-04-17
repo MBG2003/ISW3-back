@@ -25,8 +25,8 @@ public class AulaCurso implements Serializable {
     private DiaSemana dia;
 
     @Column(nullable = false)
-    private LocalTime horaInicio;
+    private int horaInicio;
 
     @Column(nullable = false)
-    private LocalTime horaFin;
+    private int horaFin;
 }

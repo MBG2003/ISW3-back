@@ -4,6 +4,7 @@ import co.edu.uniquindio.proyecto_isw3.dto.AulaDTO;
 import co.edu.uniquindio.proyecto_isw3.dto.get.AulaGetDTO;
 import co.edu.uniquindio.proyecto_isw3.dto.get.RecursoGetDTO;
 import co.edu.uniquindio.proyecto_isw3.modelo.Aula;
+import co.edu.uniquindio.proyecto_isw3.modelo.DiaSemana;
 import co.edu.uniquindio.proyecto_isw3.modelo.RecursoAV;
 import co.edu.uniquindio.proyecto_isw3.modelo.key.AulaKey;
 import co.edu.uniquindio.proyecto_isw3.repositorios.AulaRepo;
@@ -96,6 +97,21 @@ public class AulaServiceImpl implements AulaService {
         key.setFacultad(facultadService.buscar(idFacultad));
         validar(key);
         return aulaRepo.findById(key).get();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<AulaGetDTO> listarPorHorario(int diaSemana, int horaInicio, int horaFin) throws Exception {
+        List<Aula> aulas = aulaRepo.listarPorHorario(DiaSemana.getById(diaSemana), horaInicio, horaFin);
+        List<AulaGetDTO> aulasGetDTO = new ArrayList<>();
+        if(aulas.isEmpty()) {
+            throw new Exception(ms.getMessage("aula.lista.vacio", null, LocaleContextHolder.getLocale()));
+        }
+
+        for (Aula a : aulas) {
+            aulasGetDTO.add(convertir(a));
+        }
+        return aulasGetDTO;
     }
 
     private Aula convertir(AulaDTO aulaDTO) throws Exception {

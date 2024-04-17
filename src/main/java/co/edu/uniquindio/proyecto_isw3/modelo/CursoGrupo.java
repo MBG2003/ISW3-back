@@ -23,5 +23,8 @@ public class CursoGrupo implements Serializable {
     private int cupos;
 
     @OneToMany(mappedBy = "key.grupo")
-    private List<HorarioGrupo> horario;
+    private List<HorarioGrupo> horarioGrupo;
+
+    @OneToMany(mappedBy = "key.cursoGrupo")
+    private List<AulaCurso> horarioAula;
 }

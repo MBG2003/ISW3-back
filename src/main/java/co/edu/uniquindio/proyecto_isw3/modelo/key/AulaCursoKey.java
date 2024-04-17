@@ -1,7 +1,7 @@
 package co.edu.uniquindio.proyecto_isw3.modelo.key;
 
 import co.edu.uniquindio.proyecto_isw3.modelo.Aula;
-import co.edu.uniquindio.proyecto_isw3.modelo.Curso;
+import co.edu.uniquindio.proyecto_isw3.modelo.CursoGrupo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -27,7 +27,8 @@ public class AulaCursoKey implements Serializable {
     @JoinColumns({
             @JoinColumn(name = "id_facu_curso", referencedColumnName = "id_facultad"),
             @JoinColumn(name = "id_prog_curso", referencedColumnName = "id_programa"),
-            @JoinColumn(name = "id_curso", referencedColumnName = "id_curso")
+            @JoinColumn(name = "id_curso", referencedColumnName = "id_curso"),
+            @JoinColumn(name = "id_grupo", referencedColumnName = "id_grupo")
     })
-    private Curso curso;
+    private CursoGrupo cursoGrupo;
 }

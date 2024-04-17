@@ -1,5 +1,6 @@
 package co.edu.uniquindio.proyecto_isw3.controlador;
 
+import co.edu.uniquindio.proyecto_isw3.dto.AulaCursoDTO;
 import co.edu.uniquindio.proyecto_isw3.dto.CursoDTO;
 import co.edu.uniquindio.proyecto_isw3.dto.MensajeDTO;
 import co.edu.uniquindio.proyecto_isw3.dto.get.CursoGetDTO;
@@ -56,5 +57,13 @@ public class CursoController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new MensajeDTO(HttpStatus.OK, false, ms.getMessage("curso.eliminado", new Object[]{cursoId}, LocaleContextHolder.getLocale()), cursoId));
+    }
+
+    @PostMapping("/asignarAula")
+    public ResponseEntity<MensajeDTO> asignarAula(@RequestBody @Valid AulaCursoDTO aulaCursoDTO) throws Exception {
+        cursoService.asignarAula(aulaCursoDTO);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new MensajeDTO(HttpStatus.OK, false, ms.getMessage("curso.aula.asignado", null, LocaleContextHolder.getLocale()), null));
     }
 }

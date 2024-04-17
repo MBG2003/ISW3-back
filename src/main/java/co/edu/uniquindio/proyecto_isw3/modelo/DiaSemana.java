@@ -17,4 +17,11 @@ public enum DiaSemana {
     public int getId() {
         return this.id;
     }
+
+    public static DiaSemana getById(int id) {
+        for(DiaSemana dia : values()) {
+            if(dia.id == id) return dia;
+        }
+        return null;
+    }
 }
